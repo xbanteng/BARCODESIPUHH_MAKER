@@ -52,7 +52,12 @@ $('go').onclick=async()=>{
     const a=await post('/api/app',{token:j.token});
     if(!a.ok){say(await a.text(),true);$('go').disabled=false;return}
     const html=await a.text();
-    document.open();document.write(html);document.close();
+    document.body.style.cssText='margin:0;padding:0;display:block;min-height:0';
+    document.body.innerHTML='';
+    const f=document.createElement('iframe');
+    f.style.cssText='border:0;width:100vw;height:100vh;display:block';
+    f.srcdoc=html;
+    document.body.appendChild(f);
   }catch(e){say('Gagal terhubung ke server.',true);$('go').disabled=false}
 };
 $('code').addEventListener('keydown',e=>{if(e.key==='Enter')$('go').click()});
